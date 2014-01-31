@@ -1,0 +1,40 @@
+BtheB Group 1 Write-up
+========================================================
+
+```{r}
+library(ggplot2)
+library(MASS)
+library(HSAUR2)
+
+BtheB <- BtheB
+attach(BtheB)
+summary(BtheB)
+
+plot(bdi.3m~bdi.2m)
+m2m3m <- lm(bdi.3m~bdi.2m,data=BtheB)
+abline(m2m3m)
+summary(m2m3m)
+
+qplot(bdi.2m, bdi.3m, data = BtheB, facets = . ~ treatment,geom=c("point","smooth"), method="lm")
+```
+
+```{r}
+m2<-rbind(,sum(is.na(BtheB$bdi.2m) & BtheB$treatment=="BtheB"), sum(is.na(BtheB$bdi.2m) & BtheB$treatment=="TAU") +sum(is.na(BtheB$bdi.2m) & BtheB$treatment=="BtheB"))
+m3<-rbind(sum(is.na(BtheB$bdi.3m) & BtheB$treatment=="TAU"),sum(is.na(BtheB$bdi.3m) & BtheB$treatment=="BtheB"), sum(is.na(BtheB$bdi.3m) & BtheB$treatment=="TAU") +sum(is.na(BtheB$bdi.3m) & BtheB$treatment=="BtheB"))
+m4<-rbind(sum(is.na(BtheB$bdi.3m) & is.na(BtheB$bdi.2m) & BtheB$treatment=="TAU"),sum(is.na(BtheB$bdi.3m) & is.na(BtheB$bdi.2m) & BtheB$treatment=="BtheB"),sum(is.na(BtheB$bdi.3m) & is.na(BtheB$bdi.2m) & BtheB$treatment=="BtheB")+sum(is.na(BtheB$bdi.3m) & is.na(BtheB$bdi.2m) & BtheB$treatment=="TAU") )
+missing<-cbind(m2,m3,m4)
+col<-c("bdi.2m", "bdi.3m", "Both")
+row<-c("TAU", "BtheB", "Total")
+row.names(missing)<-row
+colnames(missing)<-col
+missing
+
+100-27
+
+sum(BtheB$treatment=="TAU")-missing[1,2]
+sum(BtheB$treatment=="BtheB")-missing[2,2]
+
+```
+The 3 that are missing from the m2 data are also missing from the m3 data, so we have 73 useuable observations.  Of these 73 we have a close number for each treament; 36 had the treatment TAU and 37 had the treatment, "BtheB".  It's nice that we have a almost even number of participants in each group.  Though the sample size seems too small, it is far better than if we had used either of the last 2 variables.
+
+
