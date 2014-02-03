@@ -47,7 +47,7 @@ qplot(bdi.2m, bdi.3m, data = BtheB, facets = . ~ treatment,geom=c("point","smoot
 ```
 
 ```{r}
-m2<-rbind(,sum(is.na(BtheB$bdi.2m) & BtheB$treatment=="BtheB"), sum(is.na(BtheB$bdi.2m) & BtheB$treatment=="TAU") +sum(is.na(BtheB$bdi.2m) & BtheB$treatment=="BtheB"))
+m2<-rbind(sum(is.na(BtheB$bdi.2m) & BtheB$treatment=="TAU"), sum(is.na(BtheB$bdi.2m) & BtheB$treatment=="BtheB"), sum(is.na(BtheB$bdi.2m) & BtheB$treatment=="TAU") +sum(is.na(BtheB$bdi.2m) & BtheB$treatment=="BtheB"))
 m3<-rbind(sum(is.na(BtheB$bdi.3m) & BtheB$treatment=="TAU"),sum(is.na(BtheB$bdi.3m) & BtheB$treatment=="BtheB"), sum(is.na(BtheB$bdi.3m) & BtheB$treatment=="TAU") +sum(is.na(BtheB$bdi.3m) & BtheB$treatment=="BtheB"))
 m4<-rbind(sum(is.na(BtheB$bdi.3m) & is.na(BtheB$bdi.2m) & BtheB$treatment=="TAU"),sum(is.na(BtheB$bdi.3m) & is.na(BtheB$bdi.2m) & BtheB$treatment=="BtheB"),sum(is.na(BtheB$bdi.3m) & is.na(BtheB$bdi.2m) & BtheB$treatment=="BtheB")+sum(is.na(BtheB$bdi.3m) & is.na(BtheB$bdi.2m) & BtheB$treatment=="TAU") )
 missing<-cbind(m2,m3,m4)
