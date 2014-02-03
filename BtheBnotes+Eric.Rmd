@@ -1,6 +1,34 @@
 BtheB Group 1 Write-up
 ========================================================
 
+**TODO** : Our names will go here (?)
+
+## Introduction
+
+This is a dataset containing information from a clinical trial with "Beat the Blues", an interactive 
+multimedia program of cognitive-behavioural techniques. Since there are way more patients suffering from anxiety 
+and depression than therapists, the study of the dataset makes the case that this program can indeed help with 
+the treatment. One of the metrics used to gauge depression levels was BDI or Beck Depression Inventory. 
+
+The dataset contains one hundred observations of one hundred patients and eight variables. 
+BDI was tracked before treatment, after two  months and then after one, three and six month follow-ups. 
+Two groups are studied, one that uses the BtB program and one that has the usual anti-depression treatment. 
+Those can be further splitted to sub-groups of patients that were taking anti-depressant drugs. 
+
+
+**TODO** : Do you think anything else should be added? Perhaps what's the main point in our report,
+i.e the variables we compare. 
+
+
+**TODO** : Citation is needed (perhaps with knitcitations?)
+This data frame comes from the following study. 
+
+*J. Proudfoot, D. Goldberg, A. Mann, B. S. Everitt, I. Marks and J. A. Gray, (2003). Computerized, interactive, multimedia cognitive-behavioural program for anxiety and depression in general practice. Psychological Medicine, 33(2), 217–227.*
+
+
+
+## On missing values
+
 ```{r}
 library(ggplot2)
 library(MASS)
