@@ -1,7 +1,6 @@
 \documentclass{article}
 
 \begin{document}
-\SweaveOpts{concordance=TRUE}
 \title{Write-up for the Beat the Blues Data}
 \author{Eric Reed, Sara Nunez, Yiding Zhang, Kostis Gourgoulias\\
 University of Massachusetts, Amherst}
