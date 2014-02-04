@@ -5,7 +5,8 @@
 \author{Eric Reed, Sara Nunez, Yiding Zhang, Kostis Gourgoulias\\
 University of Massachusetts, Amherst}
 \maketitle
-\newpage
+
+
 \section{Background}
 This is a dataset containing information from a clinical trial with "Beat the Blues", an interactive
 multimedia program of cognitive-behavioural techniques. Since there are way more patients suffering from anxiety
