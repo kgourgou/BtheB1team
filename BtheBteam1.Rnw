@@ -2,7 +2,7 @@
 
 \begin{document}
 \title{Write-up for the Beat the Blues Data}
-\author{Eric Reed, Sara Nunez, Yiding Zhang, Kostis Gourgoulius\\
+\author{Eric Reed, Sara Nunez, Yiding Zhang, Kostis Gourgoulias\\
 University of Massachusetts, Amherst}
 \maketitle
 \newpage
@@ -16,7 +16,7 @@ The dataset contains one hundred observations of one hundred patients and eight 
 BDI was tracked before treatment, after two months and then after one, three and six month follow-ups.
 Two groups are studied, one that uses the BtB program and one that has the usual anti-depression treatment.
 Those can be further splitted to sub-groups of patients that were taking anti-depressant drugs.
-*J. Proudfoot, D. Goldberg, A. Mann, B. S. Everitt, I. Marks and J. A. Gray, (2003). Computerized, interactive, multimedia cognitive-behavioural program for anxiety and depression in general practice. Psychological Medicine, 33(2), 217–227.*
+
 <<thedata>>=
 library(ggplot2)
 library(MASS)
@@ -123,5 +123,12 @@ The regression line for the whole dataset had a $\beta$ value of 0.8718, and a c
 We can interpret these results to say that for the whole datset, given a one unit increase in bdi.2w we can expect a 0.8718 unit increase in bdi.3w.  For the subset containing partipants who underwent the "TAU" treatment, given a 1 unit increase in bdi.2w we can expect a 0.9811 unit increase in bdi.3w. And, For the subset containing partipants who underwent the "BtheB" treatment, given a 1 unit increase in bdi.2w we can expect a 0.944 unit increase in bdi.3w.  This supports our hypothesis since the proportion, $\beta$ value, between our before, "bdi,2w", and after, "bdi.3w", is smaller for the "BtheB" group.
 
 It should also be noted that our regression lines proved to be a much better predictor when we subsetted the data, as the correlational coefficients are much close to 1 for the each subset than the whole dataset.
+
+
+\begin{thebibliography}{1}
+\bibitem{Proudfoot}
+J. Proudfoot, D. Goldberg, A. Mann, B. S. Everitt, I. Marks and J. A. Gray, (2003). Computerized, interactive, multimedia cognitive-behavioural program for anxiety and depression in general practice. Psychological Medicine, 33(2), 217–227.*
+\end{thebibliography}
+
 
 \end{document}

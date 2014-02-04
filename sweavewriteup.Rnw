@@ -5,9 +5,19 @@
 \author{Eric Reed, Sarah Nunez, Yiding Zhang, Kostis Gourgoulius\\
 University of Massachusetts, Amherst}
 \maketitle
-\newpage
 \section{Background}
 
+This is a dataset containing information from a clinical trial with "Beat the Blues", an interactive
+multimedia program of cognitive-behavioural techniques. Since there are way more patients suffering from anxiety
+and depression than therapists, the study of the dataset makes the case that this program can indeed help with
+the treatment. One of the metrics used to gauge depression levels was BDI or Beck Depression Inventory.
+
+The dataset contains one hundred observations of one hundred patients and eight variables.
+BDI was tracked before treatment, after two months and then after one, three and six month follow-ups.
+Two groups are studied, one that uses the BtB program and one that has the usual anti-depression treatment.
+Those can be further splitted to sub-groups of patients that were taking anti-depressant drugs.
+
+Here is a summary of the dataset.
 <<thedata>>=
 <<fig=TRUE>>=
 library(ggplot2)
@@ -21,6 +31,25 @@ summary(BtheB)
 
 
 \section{Variables and Hypothesis}
+
+
+The variables we chose to work with were bdi.2m and bdi.3m, which were the Beck Depression Inventory II test results of the 100 patients after two months and after three months, respectively.
+
+```{r}
+library(ggplot2)
+library(MASS)
+library(HSAUR2)
+
+BtheB <- BtheB
+attach(BtheB)
+```
+The following summarizes all 8 variables and displays side-by-side boxplots of the two variables bdi.2m and bdi.3m.
+```{r}
+summary(BtheB)
+boxplot(bdi.2m, bdi.3m)
+```
+As displayed in the boxplots, the median score on the BDI test at the two month follow-up was slightly higher than that at the three month follow-up.
+
 
 <<fig=TRUE>>=
 plot(bdi.3m~bdi.2m)
