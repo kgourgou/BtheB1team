@@ -1,0 +1,127 @@
+\documentclass{article}
+
+\begin{document}
+\title{Write-up for the Beat the Blues Data}
+\author{Eric Reed, Sara Nunez, Yiding Zhang, Kostis Gourgoulius\\
+University of Massachusetts, Amherst}
+\maketitle
+\newpage
+\section{Background}
+This is a dataset containing information from a clinical trial with "Beat the Blues", an interactive
+multimedia program of cognitive-behavioural techniques. Since there are way more patients suffering from anxiety
+and depression than therapists, the study of the dataset makes the case that this program can indeed help with
+the treatment. One of the metrics used to gauge depression levels was BDI or Beck Depression Inventory.
+
+The dataset contains one hundred observations of one hundred patients and eight variables.
+BDI was tracked before treatment, after two months and then after one, three and six month follow-ups.
+Two groups are studied, one that uses the BtB program and one that has the usual anti-depression treatment.
+Those can be further splitted to sub-groups of patients that were taking anti-depressant drugs.
+*J. Proudfoot, D. Goldberg, A. Mann, B. S. Everitt, I. Marks and J. A. Gray, (2003). Computerized, interactive, multimedia cognitive-behavioural program for anxiety and depression in general practice. Psychological Medicine, 33(2), 217–227.*
+<<thedata>>=
+library(ggplot2)
+library(MASS)
+library(HSAUR2)
+
+BtheB <- BtheB
+attach(BtheB)
+summary(BtheB)
+@
+
+
+\section{Variables and Hypothesis}
+
+The variables we chose to work with were bdi.2m and bdi.3m, which were the Beck Depression Inventory II test results of the 100 patients after two months and after three months, respectively.
+
+The purpose of this analysis was to intperpret the results from a linear regression for the Beck Depression Inventory II test at week 3 as, a function of week 2. The slope of the regression line for this data, represents the proportion between the BDI at week 3 and week 2. We therefore hypothesize, that the slope of the regression line for the subset of the patients who recieved the "BtheB" treatment, will be smaller than that of the patients who recieved the "TAU" treatment. 
+\newline
+\newline
+The following summarizes the two variables of interest for the usual treatment group and the beat the blues group:
+
+<<echo=FALSE>>=
+# Multiplot Function
+multiplot <- function(..., plotlist=NULL, file, cols=1, layout=NULL) {
+  require(grid)
+
+  # Make a list from the ... arguments and plotlist
+  plots <- c(list(...), plotlist)
+
+  numPlots = length(plots)
+
+  # If layout is NULL, then use 'cols' to determine layout
+  if (is.null(layout)) {
+    # Make the panel
+    # ncol: Number of columns of plots
+    # nrow: Number of rows needed, calculated from # of cols
+    layout <- matrix(seq(1, cols * ceiling(numPlots/cols)),
+                    ncol = cols, nrow = ceiling(numPlots/cols))
+  }
+
+ if (numPlots==1) {
+    print(plots[[1]])
+
+  } else {
+    # Set up the page
+    grid.newpage()
+    pushViewport(viewport(layout = grid.layout(nrow(layout), ncol(layout))))
+
+    # Make each plot, in the correct location
+    for (i in 1:numPlots) {
+      # Get the i,j matrix positions of the regions that contain this subplot
+      matchidx <- as.data.frame(which(layout == i, arr.ind = TRUE))
+
+      print(plots[[i]], vp = viewport(layout.pos.row = matchidx$row,
+                                      layout.pos.col = matchidx$col))
+    }
+  }
+}
+
+@
+
+<<fig=TRUE>>=
+h1 = qplot(bdi.2m, fill = treatment, main ="BDI 2 month Follow-up Histogram")
+h2 = qplot(bdi.3m, fill = treatment, main ="BDI 3 month Follow-up Histogram")
+multiplot(h1,h2)
+@
+
+
+
+<<fig=TRUE>>=
+qplot(bdi.2m,bdi.3m,data=BtheB, geom=c("point","smooth"),method="lm",color=treatment)
+m2m3m <- lm(bdi.3m~bdi.2m,data=BtheB)
+summary(m2m3m)
+tau<-lm(bdi.3m&treatment=="TAU"~bdi.2m&treatment=="TAU", data=BtheB)
+btb<-lm(bdi.3m&treatment=="BtheB"~bdi.2m&treatment=="BtheB", data=BtheB)
+summary(tau)
+summary(btb)
+@
+
+
+
+\section{Missing Data}
+
+<<echo=FALSE>>=
+m2<-rbind(sum(is.na(BtheB$bdi.2m) & BtheB$treatment=="TAU"), sum(is.na(BtheB$bdi.2m) & BtheB$treatment=="BtheB"), sum(is.na(BtheB$bdi.2m) & BtheB$treatment=="TAU") +sum(is.na(BtheB$bdi.2m) & BtheB$treatment=="BtheB"))
+m3<-rbind(sum(is.na(BtheB$bdi.3m) & BtheB$treatment=="TAU"),sum(is.na(BtheB$bdi.3m) & BtheB$treatment=="BtheB"), sum(is.na(BtheB$bdi.3m) & BtheB$treatment=="TAU") +sum(is.na(BtheB$bdi.3m) & BtheB$treatment=="BtheB"))
+m4<-rbind(sum(is.na(BtheB$bdi.3m) & is.na(BtheB$bdi.2m) & BtheB$treatment=="TAU"),sum(is.na(BtheB$bdi.3m) & is.na(BtheB$bdi.2m) & BtheB$treatment=="BtheB"),sum(is.na(BtheB$bdi.3m) & is.na(BtheB$bdi.2m) & BtheB$treatment=="BtheB")+sum(is.na(BtheB$bdi.3m) & is.na(BtheB$bdi.2m) & BtheB$treatment=="TAU") )
+missing<-cbind(m2,m3,m4)
+col<-c("bdi.2m", "bdi.3m", "Both")
+row<-c("TAU", "BtheB", "Total")
+row.names(missing)<-row
+colnames(missing)<-col
+missing
+
+100-27
+
+sum(BtheB$treatment=="TAU")-missing[1,2]
+sum(BtheB$treatment=="BtheB")-missing[2,2]
+@
+There was missing data from 3 of the participants from week two and 27 from week three.  All 3 of the participants who had missing data from week two recieved the "TAU" treatment.  Of the 27 participants who had missing data from week three, 12 recieved the "TAU" treatment and 15 recieved the "BtheB" treatment.  All 3 of the missing participants from week two were also missing from week three, therefore a total of 27 patients are not included in our analysis, 12 from "TAU" and 15 from "BtheB", giving us 36 and 37 respective participants from each group.  A sample size of only 73, is certainly very small, and will be detrimental to the confidence we have in the outcome.  However, we have considerably more data on studay participants than if we had used data from week 5, or week 8, as each had missing data for 42 and 48 participants respectively.
+
+\section{Results and Interpretation}
+
+The regression line for the whole dataset had a $\beta$ value of 0.8718, and a correlational coefficient of 0.625.  The regression line for the subset of the data for paricipants in the "TAU" treatment group had a $\beta$  value of 0.9811, and had a correlational coeficcient of 0.954. The regression line for the subset of the data for paricipants in the "BtheB" treatment group had a $\beta$  value of 0.944, and had a correlational coeficcient of 0.907.
+We can interpret these results to say that for the whole datset, given a one unit increase in bdi.2w we can expect a 0.8718 unit increase in bdi.3w.  For the subset containing partipants who underwent the "TAU" treatment, given a 1 unit increase in bdi.2w we can expect a 0.9811 unit increase in bdi.3w. And, For the subset containing partipants who underwent the "BtheB" treatment, given a 1 unit increase in bdi.2w we can expect a 0.944 unit increase in bdi.3w.  This supports our hypothesis since the proportion, $\beta$ value, between our before, "bdi,2w", and after, "bdi.3w", is smaller for the "BtheB" group.
+
+It should also be noted that our regression lines proved to be a much better predictor when we subsetted the data, as the correlational coefficients are much close to 1 for the each subset than the whole dataset.
+
+\end{document}
